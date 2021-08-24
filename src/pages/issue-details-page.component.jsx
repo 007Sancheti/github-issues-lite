@@ -4,12 +4,19 @@ import { getIssues } from '../redux/issues/issues.actions';
 import IssuesList from '../components/issues-list/issues-list.component';
 
 export class IssueDetailsPage extends Component {
+    timerId;
     handleScroll = () => {
         const { scrollHeight, scrollTop, clientHeight } =
             document.documentElement;
-        if(Math.round(scrollTop) + clientHeight >= scrollHeight) {
+        if(Math.round(scrollTop) + clientHeight >= scrollHeight - 400) {
             const { getIssues } = this.props;
-            getIssues();
+
+            //Adding debouncing effect
+            clearInterval(this.timerId);
+
+            this.timerId = setTimeout(() => {
+                getIssues();
+            }, 1000)
         }
     };
     componentDidMount() {
