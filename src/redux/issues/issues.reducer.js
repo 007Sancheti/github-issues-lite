@@ -19,7 +19,7 @@ export function issuesReducer(state = initialIssuesState, action) {
         case IssuesActionTypes.GET_ISSUES_SUCCESS:
             return {
                 ...state,
-                currentPageIssues: action.payload.issues,
+                currentPageIssues: [...state.currentPageIssues, ...action.payload.issues],
                 isLoading: false,
                 error: null,
             };

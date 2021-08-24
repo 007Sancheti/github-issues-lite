@@ -1,33 +1,53 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getIssues } from '../redux/issues/issues.actions';
 import IssuesList from '../components/issues-list/issues-list.component';
 
 export class IssueDetailsPage extends Component {
-    
+    handleScroll = () => {
+        const { scrollHeight, scrollTop, clientHeight } =
+            document.documentElement;
+        if(Math.round(scrollTop) + clientHeight >= scrollHeight) {
+            const { getIssues } = this.props;
+            getIssues();
+        }
+    };
     componentDidMount() {
-        const {issues, getIssues} = this.props;
+        const { getIssues } = this.props;
         getIssues();
-        console.log(issues);
+        window.addEventListener('scroll', this.handleScroll);
     }
     render() {
-        const {issues} = this.props;
+        const { issues } = this.props;
+        const { isLoading } = issues;
         return (
             <div>
-                {
-                    issues.currentPageIssues && <IssuesList issues={issues.currentPageIssues} />
-                }
+                {issues.currentPageIssues && (
+                    <IssuesList
+                        issues={issues.currentPageIssues}
+                        isLoading={isLoading}
+                    />
+                )}
             </div>
-        )
+        );
     }
 }
 
-const mapStateToProps = state => ({
-    issues: state.issues
-})
+const mapStateToProps = (state) => ({
+    issues: state.issues,
+});
 
-const mapDispatchToProps = (dispatch, {match: {params: {org, repo}}}) => ({
-    getIssues: () => dispatch(getIssues(org, repo, 1))
-})
+let pageCount = 1;
 
-export default connect(mapStateToProps, mapDispatchToProps)(IssueDetailsPage)
+const mapDispatchToProps = (
+    dispatch,
+    {
+        match: {
+            params: { org, repo },
+        },
+    }
+) => ({
+    getIssues: () => dispatch(getIssues(org, repo, pageCount++)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(IssueDetailsPage);
