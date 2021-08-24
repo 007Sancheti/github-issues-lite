@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export function getIssues(org = 'rails', repo = 'rails', page = 1) {
-    const url = `https://api.github.com/repos/${org}/${repo}/issues?per_page=25&page=${page}`;
+    const url = `https://api.github.com/repos/${org}/${repo}/issues?per_page=10&page=${page}`;
     return axios
         .get(url)
         .then((res) => {

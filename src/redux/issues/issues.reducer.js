@@ -1,10 +1,7 @@
 import IssuesActionTypes from "./issues.types";
 
 const initialIssuesState = {
-    issuesByNumber: {},
     currentPageIssues: [],
-    pageCount: 0,
-    pageLinks: {},
     isLoading: false,
     error: null,
 };
