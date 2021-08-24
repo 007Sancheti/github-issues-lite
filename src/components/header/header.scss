@@ -4,6 +4,7 @@
     .action-buttons {
         padding: 30px;
         display: flex;
+        flex-wrap: wrap;
         & > div {
             margin: 0 10px;
         }
